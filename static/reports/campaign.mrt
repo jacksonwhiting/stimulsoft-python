@@ -1,0 +1,188 @@
+{
+  "ReportVersion": "2024.4.3",
+  "ReportGuid": "18d654e0b1556eba39081afffaa53a38",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportAuthor": "Jackson Whiting",
+  "ReportCreated": "/Date(1730738882000-0500)/",
+  "ReportChanged": "/Date(1730743507000-0500)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "ReportUnit": "Centimeters",
+  "Dictionary": {
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "root",
+        "Alias": "root",
+        "Columns": {
+          "0": {
+            "Name": "campaign",
+            "NameInSource": "campaign",
+            "Alias": "campaign",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "created",
+            "NameInSource": "created",
+            "Alias": "created",
+            "Type": "System.DateTime"
+          },
+          "2": {
+            "Name": "created_by",
+            "NameInSource": "created_by",
+            "Alias": "created_by",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "data_source_id",
+            "NameInSource": "data_source_id",
+            "Alias": "data_source_id",
+            "Type": "System.Decimal"
+          },
+          "4": {
+            "Name": "data_source_type_id",
+            "NameInSource": "data_source_type_id",
+            "Alias": "data_source_type_id",
+            "Type": "System.Decimal"
+          },
+          "5": {
+            "Name": "deleted",
+            "NameInSource": "deleted",
+            "Alias": "deleted",
+            "Type": "System.Boolean"
+          },
+          "6": {
+            "Name": "deleted_batch_id",
+            "NameInSource": "deleted_batch_id",
+            "Alias": "deleted_batch_id",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "deleted_date",
+            "NameInSource": "deleted_date",
+            "Alias": "deleted_date",
+            "Type": "System.String"
+          },
+          "8": {
+            "Name": "description",
+            "NameInSource": "description",
+            "Alias": "description",
+            "Type": "System.String"
+          },
+          "9": {
+            "Name": "id",
+            "NameInSource": "id",
+            "Alias": "id",
+            "Type": "System.Decimal"
+          },
+          "10": {
+            "Name": "modified",
+            "NameInSource": "modified",
+            "Alias": "modified",
+            "Type": "System.String"
+          },
+          "11": {
+            "Name": "modified_by",
+            "NameInSource": "modified_by",
+            "Alias": "modified_by",
+            "Type": "System.String"
+          },
+          "12": {
+            "Name": "org_id",
+            "NameInSource": "org_id",
+            "Alias": "org_id",
+            "Type": "System.Decimal"
+          },
+          "13": {
+            "Name": "realm_id",
+            "NameInSource": "realm_id",
+            "Alias": "realm_id",
+            "Type": "System.Decimal"
+          },
+          "14": {
+            "Name": "src_campaign_id",
+            "NameInSource": "src_campaign_id",
+            "Alias": "src_campaign_id",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "campaign.root"
+      }
+    },
+    "Databases": {
+      "0": {
+        "Ident": "StiJsonDatabase",
+        "Name": "campaign",
+        "Alias": "campaign",
+        "PathData": "/Users/jacksonwhiting/programming/python-projects/test_fast_api/campaign.json",
+        "HeadersString": "YyoQVHvZXeyY3LY5ASN05g=="
+      }
+    },
+    "UserFunctions": {
+      "0": {
+        "Name": "Function1",
+        "ScriptMode": "Code",
+        "Arguments": {
+          "0": {
+            "Name": "data"
+          }
+        },
+        "ScriptJS": "function transform(data) {\n  return {\n    data: data\n  };\n}\n"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "a85030b8430846cacdf320d6eabfd359",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand1",
+          "CanGrow": true,
+          "ClientRectangle": "0,0.4,19.01,0.8",
+          "Expressions": {
+            "0": {
+              "Name": "CountData"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "ClientRectangle": "0.2,0.2,18.6,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root.campaign}"
+              },
+              "Font": ";16;Bold;",
+              "Border": ";;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0"
+            }
+          },
+          "DataSourceName": "root"
+        }
+      },
+      "PageWidth": 21.01,
+      "PageHeight": 29.69,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      }
+    }
+  }
+}
