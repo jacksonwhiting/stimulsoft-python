@@ -1,4 +1,317 @@
 <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Stimulsoft Report Viewer</title>
+		<!-- Include Stimulsoft scripts -->
+		<script
+			type="text/javascript"
+			src="/static/scripts/stimulsoft.reports.js"></script>
+		<script
+			type="text/javascript"
+			src="/static/scripts/stimulsoft.viewer.js"></script>
+		<!-- <script type="text/javascript"></script> -->
+	</head>
+	<body>
+		<div id="app" style="width: 100%; height: 100vh"></div>
+		<script type="text/javascript">
+			// document.addEventListener("DOMContentLoaded", async function () {
+			// Create a new report object
+			var report = new Stimulsoft.Report.StiReport()
+
+			// Load report template in the report object
+			// report.loadFile("/static/reports/Campaign1.mrt")
+
+			// Define the path to the JSON data
+			var campaignApiUrl =
+				"https://adintel.palmerhill.com/campaigns/?skip=0&limit=5" // Change this path as needed
+			var dataSourceTypeUrl =
+				"https://adintel.palmerhill.com/data_source_types/?skip=0&limit=5"
+			var metricsGroupedApiUrl =
+				"https://adintel.palmerhill.com/metrics/grouped?start_date=2024-05-01&end_date=2024-05-30&group_data_source=false&aggregate_by=day&skip=0&limit=20"
+
+			async function loadAndRegisterFilteredCampaigns() {
+				try {
+					// Fetch data from the filteredCampaigns API URL
+					const response = await fetch(campaignApiUrl)
+					if (!response.ok) {
+						throw new Error(
+							`Network response was not ok: ${response.statusText}`
+						)
+					}
+
+					// Parse the JSON response
+					const jsonData = await response.json()
+					console.log("Filtered Campaigns JSON Data:", jsonData)
+
+					// Create a new DataSet for the filtered campaigns
+					var filteredCampaignsDataSet =
+						new Stimulsoft.System.Data.DataSet("filteredCampaigns")
+
+					// Load the JSON data into the dataset
+					filteredCampaignsDataSet.readJson(jsonData)
+					console.log(
+						"FilteredCampaignsDataSet:",
+						filteredCampaignsDataSet.tables.list[0].rows
+					)
+
+					// Register the dataset with the report
+					report.regData(
+						filteredCampaignsDataSet.dataSetName,
+						"filteredCampaigns",
+						filteredCampaignsDataSet
+					)
+					console.log("FilteredCampaignsDataSet registered successfully")
+				} catch (error) {
+					console.error("Failed to load filteredCampaigns data:", error)
+				}
+			}
+
+			async function loadAndRegisterMetricsGrouped() {
+				try {
+					const response = await fetch(metricsGroupedApiUrl)
+					if (!response.ok) {
+						throw new Error(
+							`Network response was not ok: ${response.statusText}`
+						)
+					}
+					const jsonData = await response.json()
+					// Add a calculated column for ClickThroughRate percentage.  This caluclated field is also in the Designer
+					jsonData.forEach((item) => {
+						if (item.total_ctr != null) {
+							item.ctr_percentage = item.total_ctr * 100 // Adding a new field for the percentage value
+						} else {
+							item.ctr_percentage = 0 // Handle null or undefined values
+						}
+					})
+					console.log(jsonData)
+					var metricsGroupedDataSet = new Stimulsoft.System.Data.DataSet(
+						"metricsGrouped"
+					)
+					metricsGroupedDataSet.readJson(jsonData)
+					console.log("MetricsGroupedDataSet:", metricsGroupedDataSet)
+					// Assuming you have a dataset named 'metricsGroupedDataSet' which is used for the chart
+					// var numberOfBars =
+					// 	metricsGroupedDataSet.tables.list[0].rows.length
+					// console.log(
+					// 	"Number of bars (or values) being loaded: ",
+					// 	numberOfBars
+					// )
+
+					report.regData(
+						metricsGroupedDataSet.dataSetName,
+						"metricsGrouped",
+						metricsGroupedDataSet
+					)
+					console.log("MetricsGroupedDataSet registered successfully")
+				} catch (error) {
+					console.error("Failed to load metricsGrouped data:", error)
+				}
+			}
+
+			async function loadAndRegisterDataSourceTypes() {
+				try {
+					// Fetch data from the dataSourceTypes API URL
+					const response = await fetch(dataSourceTypeUrl)
+					if (!response.ok) {
+						throw new Error(
+							`Network response was not ok: ${response.statusText}`
+						)
+					}
+
+					// Parse the JSON response
+					const jsonData = await response.json()
+					console.log("DataSource Types JSON Data:", jsonData)
+
+					// Create a new DataSet for the dataSource types
+					var dataSourceTypesDataSet = new Stimulsoft.System.Data.DataSet(
+						"dataSourceTypes"
+					)
+
+					// Load the JSON data into the dataset
+					dataSourceTypesDataSet.readJson(jsonData)
+					console.log("DataSourceTypesDataSet:", dataSourceTypesDataSet)
+
+					// Register the dataset with the report
+					report.regData(
+						dataSourceTypesDataSet.dataSetName,
+						"dataSourceTypes",
+						dataSourceTypesDataSet
+					)
+					console.log("DataSourceTypesDataSet registered successfully")
+				} catch (error) {
+					console.error("Failed to load dataSourceTypes data:", error)
+				}
+			}
+
+			async function initializeReport() {
+				// Load the report template
+				report.loadFile("/static/reports/Campaign1.mrt")
+				// Clear any existing data sources
+				report.dictionary.dataSources.clear()
+				console.log("Cleared Data Sources:", report.dictionary.dataSources)
+
+				// Load and register metricsGrouped dataset
+				await loadAndRegisterFilteredCampaigns()
+				await loadAndRegisterDataSourceTypes()
+				await loadAndRegisterMetricsGrouped()
+
+				// Get a data band by its name
+
+				// Synchronize the dictionary after all datasets are registered
+				report.dictionary.synchronize()
+
+				var totalCostChart = report.getComponentByName("total_cost") // Replace "Chart1" with your chart's name
+				var lineClicksChart = report.getComponentByName("line_clicks") // Replace "Chart1" with your chart's name
+				var lineImpressionsChart =
+					report.getComponentByName("line_impressions") // Replace "Chart1" with your chart's name
+
+				totalCostChart.area._yAxis.labels.format = "$#,###"
+				totalCostChart.area._xAxis.labels.format = "MM/dd"
+				lineClicksChart.area._yAxis.labels.format = "$#,###"
+				lineClicksChart.area._xAxis.labels.format = "MM/dd"
+				lineImpressionsChart.area._yAxis.labels.format = "$#,K"
+				lineImpressionsChart.area._xAxis.labels.format = "MM/dd"
+
+				// chart.axisY.label.textFormat = function (value) {
+				// 	if (value == null) {
+				// 		return "" // Return an empty string or a default value if null
+				// 	}
+				// 	if (value >= 1000000) {
+				// 		return (value / 1000000).toFixed(1) + "M"
+				// 	} else if (value >= 1000) {
+				// 		return (value / 1000).toFixed(1) + "K"
+				// 	} else {
+				// 		return value.toString()
+				// 	}
+				// }
+
+				// Create a viewer, assign the report, and render it
+				var viewer = new Stimulsoft.Viewer.StiViewer(
+					null,
+					"StiViewer",
+					false
+				)
+				viewer.report = report
+				viewer.renderHtml("app")
+			}
+
+			initializeReport()
+
+			// //Create a new data set
+			// var campaignsDataSet = new Stimulsoft.System.Data.DataSet(
+			// 	"filteredCampaigns"
+			// )
+			// //Read in data from API endpoint
+			// campaignsDataSet.readJsonFile(campaignApiUrl)
+			// console.log("campaignsDataSet:", campaignsDataSet)
+
+			// //Register the new dataSet and synchronize the dictionary
+			// report.regData(
+			// 	campaignsDataSet.dataSetName,
+			// 	"filteredCampaigns",
+			// 	campaignsDataSet
+			// )
+			// // report.dictionary.synchronize()
+			// console.log("Report Dictionary:", report.dictionary)
+
+			// //Create a new data set
+			// var dataSourceTypeDataSet = new Stimulsoft.System.Data.DataSet(
+			// 	"dataSourceTypes"
+			// )
+
+			// //Read in data from API endpoint
+			// dataSourceTypeDataSet.readJsonFile(dataSourceTypeUrl)
+			// console.log("DataSourceTypeDataSet:", dataSourceTypeDataSet)
+
+			// //Register the new dataSet and synchronize the dictionary
+			// report.regData(
+			// 	dataSourceTypeDataSet.dataSetName,
+			// 	"dataSourceTypeds",
+			// 	dataSourceTypeDataSet
+			// )
+
+			// //Create a new data set
+			// var metricsGroupedDataSet = new Stimulsoft.System.Data.DataSet(
+			// 	"metricsGrouped"
+			// )
+			// //Read in data from API endpoint
+			// metricsGroupedDataSet.readJsonFile(metricsGroupedApiUrl)
+			// console.log("MetricsGroupedDataSet:", metricsGroupedDataSet)
+
+			// //Register the new dataSet and synchronize the dictionary
+			// report.regData(
+			// 	metricsGroupedDataSet.dataSetName,
+			// 	"metricsGrouped",
+			// 	metricsGroupedDataSet
+			// )
+
+			// report.dictionary.synchronize()
+			// console.log("Report Dictionary:", report.dictionary)
+
+			// Set the report variables
+			var campaignId = report.dictionary.variables.getByName("campaign_id")
+			if (campaignId) {
+				campaignId.value = ""
+			} else {
+				console.error("Variable 'campaign_id' not found in the report")
+			}
+			var campaignName =
+				report.dictionary.variables.getByName("campaign_name")
+			if (campaignName) {
+				campaignName.val = "Test Campaign"
+			} else {
+				console.error("Variable 'campaign_name' not found in the report")
+			}
+
+			//Get current data source from the report
+			// var jsonDataSource = report.dictionary.dataSources.getByName("root")
+			// console.log("newDataSet:", newDataSet)
+			// console.log("jsonDataSource:", jsonDataSource)
+
+			//Filter data in a dataBand
+			// Set the filter Variables
+			var campaignId = "120204487062530573" // Replace with your desired campaign ID
+			var campaignName = "Test Campaign" // Replace with your desired campaign name
+
+			// if (dataBand) {
+			// 	// Set the filter using the filters array
+			// 	// dataBand.filters.clear() // Clear any existing filters
+			// 	dataBand.dataSourceName = "DynamicJsonData"
+			// 	var filterCondition =
+			// 		new Stimulsoft.Report.Components.StiFilter()
+			// 	console.log("filterCondition:", filterCondition)
+			// 	// Set the value to compare against (campaignId)
+			// 	// Set the field to filter (src_campaign_id)
+			// 	filterCondition.column = "src_campaign_id" // Field to be filtered
+
+			// 	// Set the operation type (equal, in this case)
+			// 	filterCondition.condition =
+			// 		Stimulsoft.Report.Components.StiFilterCondition.EqualTo
+
+			// 	filterCondition.valueObj1 = campaignId
+			// 	dataBand.filters.add(filterCondition)
+			// 	dataBand.filterOn = false
+
+			// 	console.log("dataBand:", dataBand) // For debugging to check if the filter has been added
+			// }
+
+			// // Create a new viewer
+			// var viewer = new Stimulsoft.Viewer.StiViewer(null, "StiViewer", false)
+
+			// // Assign report object to report viewer
+			// viewer.report = report
+			// console.log("report:", report)
+
+			// // Render the viewer to the 'app' div
+			// viewer.renderHtml("app")
+			// })
+		</script>
+	</body>
+</html>
+
+<!-- <!DOCTYPE html>
 
 <html>
 	<head>
@@ -13,4 +326,4 @@
 		<h1>Hello World</h1>
 		{{ reportHtml|safe }}
 	</body>
-</html>
+</html> -->
