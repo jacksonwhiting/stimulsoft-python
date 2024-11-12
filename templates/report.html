@@ -16,12 +16,11 @@
 	<body>
 		<div id="app" style="width: 100%; height: 100vh"></div>
 		<script type="text/javascript">
-			// document.addEventListener("DOMContentLoaded", async function () {
 			// Create a new report object
 			var report = new Stimulsoft.Report.StiReport()
-
-			// Load report template in the report object
-			// report.loadFile("/static/reports/Campaign1.mrt")
+			console.log("Report (initial):", report)
+			const urlParams = "{{ request.query_params }}"
+			console.log("URL Params:", urlParams)
 
 			// Define the path to the JSON data
 			var campaignApiUrl =
@@ -80,7 +79,7 @@
 					// Add a calculated column for ClickThroughRate percentage.  This caluclated field is also in the Designer
 					jsonData.forEach((item) => {
 						if (item.total_ctr != null) {
-							item.ctr_percentage = item.total_ctr * 100 // Adding a new field for the percentage value
+							item.ctr_percentage = item.total_ctr // Adding a new field for the percentage value
 						} else {
 							item.ctr_percentage = 0 // Handle null or undefined values
 						}
@@ -91,13 +90,6 @@
 					)
 					metricsGroupedDataSet.readJson(jsonData)
 					console.log("MetricsGroupedDataSet:", metricsGroupedDataSet)
-					// Assuming you have a dataset named 'metricsGroupedDataSet' which is used for the chart
-					// var numberOfBars =
-					// 	metricsGroupedDataSet.tables.list[0].rows.length
-					// console.log(
-					// 	"Number of bars (or values) being loaded: ",
-					// 	numberOfBars
-					// )
 
 					report.regData(
 						metricsGroupedDataSet.dataSetName,
@@ -149,43 +141,33 @@
 				// Load the report template
 				report.loadFile("/static/reports/Campaign1.mrt")
 				// Clear any existing data sources
+
 				report.dictionary.dataSources.clear()
-				console.log("Cleared Data Sources:", report.dictionary.dataSources)
+				// console.log("Cleared Data Sources:", report.dictionary.dataSources)
 
 				// Load and register metricsGrouped dataset
 				await loadAndRegisterFilteredCampaigns()
 				await loadAndRegisterDataSourceTypes()
 				await loadAndRegisterMetricsGrouped()
 
-				// Get a data band by its name
-
 				// Synchronize the dictionary after all datasets are registered
 				report.dictionary.synchronize()
 
-				var totalCostChart = report.getComponentByName("total_cost") // Replace "Chart1" with your chart's name
-				var lineClicksChart = report.getComponentByName("line_clicks") // Replace "Chart1" with your chart's name
+				//Get charts and format labels
+				var totalCostChart = report.getComponentByName("total_cost")
+				var lineClicksChart = report.getComponentByName("line_clicks")
 				var lineImpressionsChart =
-					report.getComponentByName("line_impressions") // Replace "Chart1" with your chart's name
+					report.getComponentByName("line_impressions")
+				var lineCtrChart = report.getComponentByName("line_ctr")
 
 				totalCostChart.area._yAxis.labels.format = "$#,###"
 				totalCostChart.area._xAxis.labels.format = "MM/dd"
-				lineClicksChart.area._yAxis.labels.format = "$#,###"
+				lineClicksChart.area._yAxis.labels.format = "#,###"
 				lineClicksChart.area._xAxis.labels.format = "MM/dd"
-				lineImpressionsChart.area._yAxis.labels.format = "$#,K"
+				lineImpressionsChart.area._yAxis.labels.format = "#,K"
 				lineImpressionsChart.area._xAxis.labels.format = "MM/dd"
-
-				// chart.axisY.label.textFormat = function (value) {
-				// 	if (value == null) {
-				// 		return "" // Return an empty string or a default value if null
-				// 	}
-				// 	if (value >= 1000000) {
-				// 		return (value / 1000000).toFixed(1) + "M"
-				// 	} else if (value >= 1000) {
-				// 		return (value / 1000).toFixed(1) + "K"
-				// 	} else {
-				// 		return value.toString()
-				// 	}
-				// }
+				lineCtrChart.area._yAxis.labels.format = "0.0%"
+				lineCtrChart.area._xAxis.labels.format = "MM/dd"
 
 				// Create a viewer, assign the report, and render it
 				var viewer = new Stimulsoft.Viewer.StiViewer(
@@ -198,115 +180,7 @@
 			}
 
 			initializeReport()
-
-			// //Create a new data set
-			// var campaignsDataSet = new Stimulsoft.System.Data.DataSet(
-			// 	"filteredCampaigns"
-			// )
-			// //Read in data from API endpoint
-			// campaignsDataSet.readJsonFile(campaignApiUrl)
-			// console.log("campaignsDataSet:", campaignsDataSet)
-
-			// //Register the new dataSet and synchronize the dictionary
-			// report.regData(
-			// 	campaignsDataSet.dataSetName,
-			// 	"filteredCampaigns",
-			// 	campaignsDataSet
-			// )
-			// // report.dictionary.synchronize()
-			// console.log("Report Dictionary:", report.dictionary)
-
-			// //Create a new data set
-			// var dataSourceTypeDataSet = new Stimulsoft.System.Data.DataSet(
-			// 	"dataSourceTypes"
-			// )
-
-			// //Read in data from API endpoint
-			// dataSourceTypeDataSet.readJsonFile(dataSourceTypeUrl)
-			// console.log("DataSourceTypeDataSet:", dataSourceTypeDataSet)
-
-			// //Register the new dataSet and synchronize the dictionary
-			// report.regData(
-			// 	dataSourceTypeDataSet.dataSetName,
-			// 	"dataSourceTypeds",
-			// 	dataSourceTypeDataSet
-			// )
-
-			// //Create a new data set
-			// var metricsGroupedDataSet = new Stimulsoft.System.Data.DataSet(
-			// 	"metricsGrouped"
-			// )
-			// //Read in data from API endpoint
-			// metricsGroupedDataSet.readJsonFile(metricsGroupedApiUrl)
-			// console.log("MetricsGroupedDataSet:", metricsGroupedDataSet)
-
-			// //Register the new dataSet and synchronize the dictionary
-			// report.regData(
-			// 	metricsGroupedDataSet.dataSetName,
-			// 	"metricsGrouped",
-			// 	metricsGroupedDataSet
-			// )
-
-			// report.dictionary.synchronize()
-			// console.log("Report Dictionary:", report.dictionary)
-
-			// Set the report variables
-			var campaignId = report.dictionary.variables.getByName("campaign_id")
-			if (campaignId) {
-				campaignId.value = ""
-			} else {
-				console.error("Variable 'campaign_id' not found in the report")
-			}
-			var campaignName =
-				report.dictionary.variables.getByName("campaign_name")
-			if (campaignName) {
-				campaignName.val = "Test Campaign"
-			} else {
-				console.error("Variable 'campaign_name' not found in the report")
-			}
-
-			//Get current data source from the report
-			// var jsonDataSource = report.dictionary.dataSources.getByName("root")
-			// console.log("newDataSet:", newDataSet)
-			// console.log("jsonDataSource:", jsonDataSource)
-
-			//Filter data in a dataBand
-			// Set the filter Variables
-			var campaignId = "120204487062530573" // Replace with your desired campaign ID
-			var campaignName = "Test Campaign" // Replace with your desired campaign name
-
-			// if (dataBand) {
-			// 	// Set the filter using the filters array
-			// 	// dataBand.filters.clear() // Clear any existing filters
-			// 	dataBand.dataSourceName = "DynamicJsonData"
-			// 	var filterCondition =
-			// 		new Stimulsoft.Report.Components.StiFilter()
-			// 	console.log("filterCondition:", filterCondition)
-			// 	// Set the value to compare against (campaignId)
-			// 	// Set the field to filter (src_campaign_id)
-			// 	filterCondition.column = "src_campaign_id" // Field to be filtered
-
-			// 	// Set the operation type (equal, in this case)
-			// 	filterCondition.condition =
-			// 		Stimulsoft.Report.Components.StiFilterCondition.EqualTo
-
-			// 	filterCondition.valueObj1 = campaignId
-			// 	dataBand.filters.add(filterCondition)
-			// 	dataBand.filterOn = false
-
-			// 	console.log("dataBand:", dataBand) // For debugging to check if the filter has been added
-			// }
-
-			// // Create a new viewer
-			// var viewer = new Stimulsoft.Viewer.StiViewer(null, "StiViewer", false)
-
-			// // Assign report object to report viewer
-			// viewer.report = report
-			// console.log("report:", report)
-
-			// // Render the viewer to the 'app' div
-			// viewer.renderHtml("app")
-			// })
+			console.log("Report initialized", report)
 		</script>
 	</body>
 </html>

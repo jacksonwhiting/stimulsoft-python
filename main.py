@@ -20,9 +20,10 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def render_report(request: Request):
-    print("Request Object:", vars(request))  # This will show a dictionary of attributes
+    # print("Request Object:", vars(request))  # This will show a dictionary of attributes
     # Alternatively, inspect specific attributes:
     print("Request URL:", request.url)
+    print("Request QueryParams:", request.query_params)
     print("Request Headers:", request.headers)
     return templates.TemplateResponse("report.html", {"request": request})
 

@@ -1,12 +1,12 @@
 {
   "ReportVersion": "2024.4.3",
-  "ReportGuid": "815738c31b0b90b91722d31992bc8916",
+  "ReportGuid": "4cb2c10edf88b0fd8aee88687e36713f",
   "ReportName": "Report",
   "ReportAlias": "Report",
-  "ReportFile": "Campaign1.mrt",
+  "ReportFile": "/Users/jacksonwhiting/programming/python-projects/test_fast_api/static/reports/Campaign1.mrt",
   "ReportAuthor": "Jackson Whiting",
   "ReportCreated": "/Date(1730738882000-0500)/",
-  "ReportChanged": "/Date(1731254484000-0500)/",
+  "ReportChanged": "/Date(1731428574000-0500)/",
   "EngineVersion": "EngineV2",
   "CalculationMode": "Interpretation",
   "ReportUnit": "Centimeters",
@@ -242,14 +242,6 @@
             "NameInSource": "total_impr",
             "Alias": "total_impr",
             "Type": "System.Int32"
-          },
-          "11": {
-            "Name": "ctr_percentage",
-            "NameInSource": "ctr_percentage",
-            "Alias": "ctr_percentage",
-            "Type": "System.Double",
-            "Ident": "Calc",
-            "Expression": "root3.total_ctr*100"
           }
         },
         "NameInSource": "Metrics Grouped.root"
@@ -939,6 +931,221 @@
         },
         "6": {
           "Ident": "StiChart",
+          "Name": "line_ctr",
+          "Guid": "e6e6ae7268982d2f5d65b0f7f779b115",
+          "ClientRectangle": "9.6,12.8,9.2,6.2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:255,255,255",
+          "DataSourceName": "root3",
+          "EditorType": "Simple",
+          "HorSpacing": 19,
+          "VertSpacing": 3,
+          "Series": {
+            "0": {
+              "Ident": "StiLineSeries",
+              "ShowShadow": false,
+              "SeriesLabels": {
+                "Ident": "StiOutsideEndAxisLabels",
+                "MarkerSize": {
+                  "Width": 8,
+                  "Height": 6
+                },
+                "ValueTypeSeparator": "-",
+                "LabelColor": "50,58,69",
+                "BorderColor": "Transparent",
+                "Brush": "solid:119,255,255,255",
+                "Font": ";10;;"
+              },
+              "ValueDataColumn": "root3.total_ctr",
+              "ArgumentDataColumn": "root3.aggregate_date",
+              "Title": {
+                "Value": "Series 1"
+              },
+              "Marker": {
+                "Visible": false,
+                "Brush": "solid:152,252,255",
+                "BorderColor": "0,52,119"
+              },
+              "LineMarker": {
+                "Brush": "solid:102,202,255",
+                "BorderColor": "0,2,69"
+              },
+              "LineColor": "52,152,219",
+              "Lighting": false
+            }
+          },
+          "Area": {
+            "Ident": "StiClusteredColumnArea",
+            "BorderColor": "Transparent",
+            "Brush": "solid:255,255,255",
+            "InterlacingHor": {
+              "AllowApplyStyle": false,
+              "InterlacedBrush": "empty",
+              "Visible": false,
+              "Area": true
+            },
+            "InterlacingVert": {
+              "InterlacedBrush": "solid:10,155,155,155",
+              "Visible": false,
+              "Area": true
+            },
+            "GridLinesHor": {
+              "Color": "100,105,105,105",
+              "MinorColor": "100,105,105,105",
+              "Visible": false,
+              "Area": true
+            },
+            "GridLinesHorRight": {
+              "Visible": false,
+              "Area": true
+            },
+            "GridLinesVert": {
+              "Color": "100,105,105,105",
+              "MinorColor": "100,105,105,105",
+              "Visible": false,
+              "Area": true
+            },
+            "YAxis": {
+              "Ident": "StiYLeftAxis",
+              "Labels": {
+                "Format": "N",
+                "Color": "140,140,140",
+                "Step": 0.005
+              },
+              "LineColor": "140,140,140",
+              "Title": {
+                "Color": "140,140,140",
+                "Direction": "BottomToTop"
+              }
+            },
+            "YRightAxis": {
+              "Ident": "StiYRightAxis",
+              "Labels": {
+                "Format": "C",
+                "Color": "140,140,140",
+                "TextAlignment": "Left"
+              },
+              "LineColor": "140,140,140",
+              "Title": {
+                "Color": "140,140,140",
+                "Direction": "TopToBottom"
+              }
+            },
+            "XAxis": {
+              "Ident": "StiXBottomAxis",
+              "Labels": {
+                "Format": "MMMM dd",
+                "Angle": 45,
+                "Color": "140,140,140",
+                "TextAlignment": "Center",
+                "Step": 2
+              },
+              "LineColor": "140,140,140",
+              "Title": {
+                "Color": "140,140,140"
+              },
+              "Ticks": {
+                "Step": 1
+              },
+              "ShowXAxis": "Bottom",
+              "DateTimeStep": {
+                "NumberOfValues": 0
+              }
+            },
+            "XTopAxis": {
+              "Ident": "StiXTopAxis",
+              "Labels": {
+                "Color": "140,140,140"
+              },
+              "LineColor": "140,140,140",
+              "Title": {
+                "Color": "140,140,140"
+              }
+            },
+            "SideBySide": true
+          },
+          "Table": {
+            "AllowApplyStyle": false,
+            "GridLineColor": "0,255,255,255",
+            "GridLinesVert": false,
+            "GridOutline": false,
+            "Header": {
+              "Brush": "solid:White"
+            },
+            "DataCells": {
+              "TextColor": "231,230,230"
+            }
+          },
+          "SeriesLabels": {
+            "Ident": "StiNoneLabels",
+            "MarkerSize": {
+              "Width": 8,
+              "Height": 6
+            },
+            "ValueTypeSeparator": "-",
+            "LabelColor": "50,58,69",
+            "BorderColor": "Transparent",
+            "Brush": "solid:119,255,255,255",
+            "Font": ";10;;"
+          },
+          "Legend": {
+            "Ident": "StiLegend",
+            "ShowShadow": false,
+            "BorderColor": "Transparent",
+            "Brush": "solid:255,255,255",
+            "TitleColor": "105,105,105",
+            "LabelsColor": "140,140,140",
+            "Visible": false,
+            "MarkerSize": {
+              "Width": 10,
+              "Height": 10
+            }
+          },
+          "Title": {
+            "AllowApplyStyle": false,
+            "Font": "Arial;;Regular;",
+            "Text": "CTR",
+            "Brush": "solid:0,0,0",
+            "Visible": true
+          },
+          "Style": {
+            "Ident": "StiStyle29"
+          }
+        },
+        "7": {
+          "Ident": "StiReportTitleBand",
+          "Name": "ReportTitleBand1",
+          "CanGrow": true,
+          "ClientRectangle": "0,0.4,19.01,1.2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "empty",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "ClientRectangle": "0,0.2,10.2,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Ad Spend Performance\n"
+              },
+              "Font": ";20;Bold;",
+              "Border": ";;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            }
+          }
+        },
+        "8": {
+          "Ident": "StiChart",
           "Name": "line_impressions",
           "Guid": "d78aef0481882e83003f45d5b2eb89f1",
           "ClientRectangle": "0,12.8,9.2,6.2",
@@ -1123,223 +1330,6 @@
           },
           "Style": {
             "Ident": "StiStyle29"
-          }
-        },
-        "7": {
-          "Ident": "StiChart",
-          "Name": "line_ctr",
-          "Guid": "e6e6ae7268982d2f5d65b0f7f779b115",
-          "ClientRectangle": "9.6,12.8,9.2,6.2",
-          "Interaction": {
-            "Ident": "StiInteraction"
-          },
-          "Border": ";;;;;;;solid:Black",
-          "Brush": "solid:255,255,255",
-          "DataSourceName": "root3",
-          "HorSpacing": 19,
-          "VertSpacing": 3,
-          "Series": {
-            "0": {
-              "Ident": "StiLineSeries",
-              "ShowShadow": false,
-              "SeriesLabels": {
-                "Ident": "StiOutsideEndAxisLabels",
-                "MarkerSize": {
-                  "Width": 8,
-                  "Height": 6
-                },
-                "ValueTypeSeparator": "-",
-                "LabelColor": "50,58,69",
-                "BorderColor": "Transparent",
-                "Brush": "solid:119,255,255,255",
-                "Font": ";10;;"
-              },
-              "ValueDataColumn": "root3.ctr_percentage",
-              "ArgumentDataColumn": "root3.aggregate_date",
-              "Title": {
-                "Value": "Series 1"
-              },
-              "Marker": {
-                "Visible": false,
-                "Brush": "solid:152,252,255",
-                "BorderColor": "0,52,119"
-              },
-              "LineMarker": {
-                "Brush": "solid:102,202,255",
-                "BorderColor": "0,2,69"
-              },
-              "LineColor": "52,152,219",
-              "Lighting": false
-            }
-          },
-          "Area": {
-            "Ident": "StiClusteredColumnArea",
-            "BorderColor": "Transparent",
-            "Brush": "solid:255,255,255",
-            "InterlacingHor": {
-              "AllowApplyStyle": false,
-              "InterlacedBrush": "empty",
-              "Visible": false,
-              "Area": true
-            },
-            "InterlacingVert": {
-              "InterlacedBrush": "solid:10,155,155,155",
-              "Visible": false,
-              "Area": true
-            },
-            "GridLinesHor": {
-              "Color": "100,105,105,105",
-              "MinorColor": "100,105,105,105",
-              "Visible": false,
-              "Area": true
-            },
-            "GridLinesHorRight": {
-              "Visible": false,
-              "Area": true
-            },
-            "GridLinesVert": {
-              "Color": "100,105,105,105",
-              "MinorColor": "100,105,105,105",
-              "Visible": false,
-              "Area": true
-            },
-            "YAxis": {
-              "Ident": "StiYLeftAxis",
-              "Labels": {
-                "Format": "P2",
-                "Color": "140,140,140",
-                "Step": 0.5
-              },
-              "LineColor": "140,140,140",
-              "Title": {
-                "Color": "140,140,140",
-                "Direction": "BottomToTop"
-              },
-              "Ticks": {
-                "Step": 0.5
-              }
-            },
-            "YRightAxis": {
-              "Ident": "StiYRightAxis",
-              "Labels": {
-                "Format": "C",
-                "Color": "140,140,140",
-                "TextAlignment": "Left"
-              },
-              "LineColor": "140,140,140",
-              "Title": {
-                "Color": "140,140,140",
-                "Direction": "TopToBottom"
-              }
-            },
-            "XAxis": {
-              "Ident": "StiXBottomAxis",
-              "Labels": {
-                "Format": "MMMM dd",
-                "Angle": 45,
-                "Color": "140,140,140",
-                "TextAlignment": "Center",
-                "Step": 2
-              },
-              "LineColor": "140,140,140",
-              "Title": {
-                "Color": "140,140,140"
-              },
-              "Ticks": {
-                "Step": 1
-              },
-              "ShowXAxis": "Bottom",
-              "DateTimeStep": {
-                "NumberOfValues": 0
-              }
-            },
-            "XTopAxis": {
-              "Ident": "StiXTopAxis",
-              "Labels": {
-                "Color": "140,140,140"
-              },
-              "LineColor": "140,140,140",
-              "Title": {
-                "Color": "140,140,140"
-              }
-            },
-            "SideBySide": true
-          },
-          "Table": {
-            "AllowApplyStyle": false,
-            "GridLineColor": "0,255,255,255",
-            "GridLinesVert": false,
-            "GridOutline": false,
-            "Header": {
-              "Brush": "solid:White"
-            },
-            "DataCells": {
-              "TextColor": "231,230,230"
-            }
-          },
-          "SeriesLabels": {
-            "Ident": "StiNoneLabels",
-            "MarkerSize": {
-              "Width": 8,
-              "Height": 6
-            },
-            "ValueTypeSeparator": "-",
-            "LabelColor": "50,58,69",
-            "BorderColor": "Transparent",
-            "Brush": "solid:119,255,255,255",
-            "Font": ";10;;"
-          },
-          "Legend": {
-            "Ident": "StiLegend",
-            "ShowShadow": false,
-            "BorderColor": "Transparent",
-            "Brush": "solid:255,255,255",
-            "TitleColor": "105,105,105",
-            "LabelsColor": "140,140,140",
-            "Visible": false,
-            "MarkerSize": {
-              "Width": 10,
-              "Height": 10
-            }
-          },
-          "Title": {
-            "AllowApplyStyle": false,
-            "Font": "Arial;;Regular;",
-            "Text": "CTR",
-            "Brush": "solid:0,0,0",
-            "Visible": true
-          },
-          "Style": {
-            "Ident": "StiStyle29"
-          }
-        },
-        "8": {
-          "Ident": "StiReportTitleBand",
-          "Name": "ReportTitleBand1",
-          "CanGrow": true,
-          "ClientRectangle": "0,0.4,19.01,1.2",
-          "Interaction": {
-            "Ident": "StiInteraction"
-          },
-          "Border": ";;;;;;;solid:Black",
-          "Brush": "empty",
-          "Components": {
-            "0": {
-              "Ident": "StiText",
-              "Name": "Text1",
-              "ClientRectangle": "0,0.2,10.2,0.8",
-              "Interaction": {
-                "Ident": "StiInteraction"
-              },
-              "Text": {
-                "Value": "Ad Spend Performance\n"
-              },
-              "Font": ";20;Bold;",
-              "Border": ";;;;;;;solid:0,0,0",
-              "Brush": "solid:",
-              "TextBrush": "solid:0,0,0",
-              "Type": "Expression"
-            }
           }
         }
       },
